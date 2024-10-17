@@ -1,4 +1,4 @@
-import { Campaign, Lead, LeadCampaignStatus } from "@prisma/client";
+import { Lead } from "@prisma/client";
 
 export type LeadStatus = "New" | "Contacted" | "Qualified" | "Converted" | "Unresponsive" | "Disqualified" | "Archived"
 

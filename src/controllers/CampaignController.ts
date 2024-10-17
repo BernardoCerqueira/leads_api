@@ -1,14 +1,13 @@
 import { Handler } from "express";
 import { CreateCampaignRequestSchema, UpdateCampaignRequestSchema } from "./schemas/CampaignsRequestSchema";
-import { HttpError } from "../errors/HttpError";
-import { CampaignRepository } from "../repositories/CampaignRepository";
+import { CampaignsService } from "../services/CampaignsService";
 
 export class CampaignController {
-    constructor(private readonly campaignRepository: CampaignRepository){}
+    constructor(private readonly campaignsService: CampaignsService){}
 
     index: Handler = async (req, res, next) => {
         try {
-            const campaigns = await this.campaignRepository.index()
+            const campaigns = await this.campaignsService.getAllCampaigns()
             res.json(campaigns)
         } catch (error) {
             next(error)
@@ -18,7 +17,7 @@ export class CampaignController {
     create: Handler = async (req, res, next) => {
         try {
             const body = CreateCampaignRequestSchema.parse(req.body)
-            const newCampaing = await this.campaignRepository.create(body)
+            const newCampaing = await this.campaignsService.createCampaign(body)
             res.status(201).json(newCampaing)
         } catch (error) {
             next(error)
@@ -27,10 +26,7 @@ export class CampaignController {
 
     show: Handler = async (req, res, next) => {
         try {
-            const campaignId = +req.params.id
-            const campaign = await this.campaignRepository.show(campaignId)
-            if (!campaign) throw new HttpError(404, "Campaign not found.")
-
+            const campaign = await this.campaignsService.getCampaignById(+req.params.id)
             res.json(campaign)
         } catch (error) {
             next(error)
@@ -40,12 +36,8 @@ export class CampaignController {
     update: Handler = async (req, res, next) => {
         try {
             const campaignId = +req.params.id
-            const campaignExists = await this.campaignRepository.show(campaignId)
-            if (!campaignExists) throw new HttpError(404, "Campaign not found.")
-
             const body = UpdateCampaignRequestSchema.parse(req.body)
-            const updatedCampaign = await this.campaignRepository.update(campaignId, body)
-            
+            const updatedCampaign = await this.campaignsService.updateCampaign(campaignId, body)
             res.json(updatedCampaign)
         } catch (error) {
             next(error)
@@ -55,10 +47,7 @@ export class CampaignController {
     delete: Handler = async (req, res, next) => {
         try {
             const campaignId = +req.params.id
-            const campaignExists = await this.campaignRepository.show(campaignId)
-            if (!campaignExists) throw new HttpError(404, "Campaign not found.")
-
-            const deletedCampaign = await this.campaignRepository.delete(campaignId)
+            const deletedCampaign = await this.campaignsService.deleteCampaign(campaignId)
             res.json(deletedCampaign)
         } catch (error) {
             next(error)

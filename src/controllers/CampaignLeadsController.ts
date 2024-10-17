@@ -1,12 +1,10 @@
 import { Handler } from "express";
 import { AddLeadRequestSchema, GetCampaignLeadsRequestSchema, UpdateLeadStatusRequestSchema } from "./schemas/CampaignsRequestSchema";
-import { LeadsRepository, LeadWhereParams } from "../repositories/LeadsRepository";
-import { CampaignLeadsRepository } from "../repositories/CampaignLeadsRepository";
+import { CampaignLeadsService } from "../services/CampaignLeadsService";
 
 export class CampaignLeadsController {
     constructor(
-        private readonly leadRepository: LeadsRepository,
-        private readonly campaignLeadRepository: CampaignLeadsRepository
+        private readonly campaignLeadsService: CampaignLeadsService,
     ){}
 
     getLeads: Handler = async (req, res, next) => {
@@ -15,31 +13,22 @@ export class CampaignLeadsController {
             const query = GetCampaignLeadsRequestSchema.parse(req.query)
             const {page = "1", pageSize = "10", name, sortBy = "name", order = "asc"} = query
 
-            const pageNumber = +page
-            const limit = +pageSize
-
-            const where: LeadWhereParams = {campaignId}
-
-            if(name) where.name = {like: name, mode: "insensitive"}
-
-            const leads = await this.leadRepository.find({
-                where,
-                sortBy,
-                order,
-                limit,
-                offset: (pageNumber - 1) * limit,
-                include: {campaigns: true}
-            })
-
-            const total = await this.leadRepository.count(where)
+            const result = await this.campaignLeadsService.getAllLeadsFromCampaign(campaignId,
+                {
+                    page: +page,
+                    pageSize: +pageSize,
+                    name,
+                    sortBy,
+                    order
+                })
 
             res.json({
-                data: leads,
+                data: result.leads,
                 meta: {
-                    page: pageNumber,
-                    pageSize: limit,
-                    total,
-                    totalPages: Math.ceil(total / limit)
+                    page: +page,
+                    pageSize: +pageSize,
+                    total: result.total,
+                    totalPages: Math.ceil(result.total / Number(pageSize))
                 }
             })
         } catch (error) {
@@ -54,7 +43,7 @@ export class CampaignLeadsController {
             const leadId = body.leadId
             const status = body.status ?? "New"
 
-            const addedLead = await this.campaignLeadRepository.create({campaignId, leadId, status})
+            const addedLead = await this.campaignLeadsService.addLeadOnCampaign(campaignId, leadId, status)
             res.status(201).json(addedLead)
         } catch (error) {
             next(error)
@@ -67,7 +56,7 @@ export class CampaignLeadsController {
             const campaingId = +req.params.campaignId
             const leadId = +req.params.leadId
 
-            const updatedLeadCampaign = await this.campaignLeadRepository.update(leadId, campaingId, body)
+            const updatedLeadCampaign = await this.campaignLeadsService.updateLeadStatusOnCampaign(leadId, campaingId, body)
             res.json(updatedLeadCampaign)
         } catch (error) {
             next(error)
@@ -79,7 +68,7 @@ export class CampaignLeadsController {
             const leadId = +req.params.leadId
             const campaignId = +req.params.campaignId
             
-            const removedLead = await this.campaignLeadRepository.delete(leadId, campaignId)
+            const removedLead = await this.campaignLeadsService.deleteLeadFromCampaign(leadId, campaignId)
             res.json(removedLead)
         } catch (error) {
             next(error)
