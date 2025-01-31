@@ -23,7 +23,7 @@ You can check some parts of the code here:
 server.ts
 ![server](https://github.com/user-attachments/assets/ad3fc9b4-40c8-4b1a-871e-cbc07d70db63)
 
-error-handler
+error-handler.ts
 ![errorHandler](https://github.com/user-attachments/assets/6f645cff-6960-4371-a1bf-8a862f92b9c7)
 
 LeadsController.ts
