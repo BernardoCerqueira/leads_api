@@ -22,37 +22,37 @@ You can check some parts of the code here:
 
 server.ts
 
-![server](https://github.com/user-attachments/assets/95336045-a9ca-41ba-8ec2-8979612d1cec)
+![server](https://github.com/user-attachments/assets/ad3fc9b4-40c8-4b1a-871e-cbc07d70db63)
 
 
 error-handler.ts
 
-![errorHandler](https://github.com/user-attachments/assets/b9171044-6b00-4e88-9b82-f000fd5767ea)
+![errorHandler](https://github.com/user-attachments/assets/6f645cff-6960-4371-a1bf-8a862f92b9c7)
 
 
 LeadsController.ts
 
-![controller](https://github.com/user-attachments/assets/3dbc5b23-66bd-4278-b096-55a8a95efa03)
+![controller](https://github.com/user-attachments/assets/88dba794-09ab-4ff0-a77d-200cbb1959c3)
 
 
 LeadsRequestSchema.ts
 
-![schema](https://github.com/user-attachments/assets/f56ed7ac-f67d-41dd-92a9-c4fc48a05ee4)
+![schema](https://github.com/user-attachments/assets/f51cf236-410f-49f9-a3d6-da5c1925248d)
 
 
 LeadsService.ts
 
-![service](https://github.com/user-attachments/assets/68f7e7cc-1f4a-4b0d-b612-b9262556c257)
+![service](https://github.com/user-attachments/assets/1d28e296-9c90-4ae6-bc77-f9d0f0b7d8de)
 
 
 LeadsRepository.ts
 
-![repository](https://github.com/user-attachments/assets/53126943-9fec-483f-845f-95950fd288de)
+![repository](https://github.com/user-attachments/assets/9a378fcd-338f-499a-9fbf-581e5cec5623)
 
 
 PrismaLeadsRepository.ts
 
-![prismaRepository](https://github.com/user-attachments/assets/3aa69b9e-9087-40a1-bd41-e107ec1669b9)
+![prismaRepository](https://github.com/user-attachments/assets/2825c229-8d62-4268-a4bd-5da65d8ba827)
 
 
 
